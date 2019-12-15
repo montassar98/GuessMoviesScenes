@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Guess Movies Scenes</string>
+
+    <string-array name="movies">
+        <item>Avengers</item>
+        <item>Avatar</item>
+        <item>Hobbs And Show</item>
+        <item>dump and dumber</item>
+        <item>perfect date</item>
+        <item>always my girl</item>
+        <item>ironman</item>
+        <item>batman</item>
+        <item>the Equalizer</item>
+        <item>Fast And Furious</item>
+        <item>Superman</item>
+        <item>Vikings</item>
+        <item>Game of Thrones</item>
+        <item>friendzone</item>
+        <item>always remember</item>
+        <item>once upon a time</item>
+    </string-array>
 </resources>
