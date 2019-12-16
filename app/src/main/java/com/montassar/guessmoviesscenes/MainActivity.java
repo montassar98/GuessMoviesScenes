@@ -2,9 +2,15 @@ package com.montassar.guessmoviesscenes;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,16 +32,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      private HashMap<String,String> answerMap;
      private final String KEY_ANSWER_GAME="answer";
      public static int videoTime=10000;
+     private int score=0;
+     private SharedPreferences mSharedPreferences;
+     private SharedPreferences.Editor editor;
+     public static LinearLayout linearLayoutMain;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //===========/Hide Status Bar/===========
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //=======================================
         setContentView(R.layout.activity_main);
         moviesList = new ArrayList<>();
         answersList = new ArrayList<>();
-        Collections.addAll(moviesList,getResources().getStringArray(R.array.movies));
+        Collections.addAll(moviesList, getResources().getStringArray(R.array.movies));
+
+        mSharedPreferences =getSharedPreferences("MyPref", Activity.MODE_PRIVATE);
+        editor = mSharedPreferences.edit();
+        score=mSharedPreferences.getInt("score",0);
+
+        linearLayoutMain = findViewById(R.id.linear_layout_main);
+        linearLayoutMain.setVisibility(View.GONE);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                linearLayoutMain.setVisibility(View.VISIBLE);
+                                Toast.makeText(MainActivity.this, "handler\n"+
+                                        mSharedPreferences.getInt("score",0), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                },videoTime);
 
 
         txtAnswer1 = (TextView) findViewById(R.id.txt_answer_1);
@@ -122,8 +153,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void verifyAnswer(String answerClicked) {
-        if (answerClicked==rightAnswer)
-            Toast.makeText(this, "Right Answer", Toast.LENGTH_SHORT).show();
+        if (answerClicked.equals(rightAnswer))
+        {
+            editor.putInt("score",mSharedPreferences.getInt("score",0)+100);
+            editor.commit();
+            Toast.makeText(this, "Right Answer \n"+score, Toast.LENGTH_LONG).show();
+
+
+        }
         else Toast.makeText(this, "Wrong", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(MainActivity.this,MainActivity.class);
+        finish();
+        startActivity(intent);
     }
 }
