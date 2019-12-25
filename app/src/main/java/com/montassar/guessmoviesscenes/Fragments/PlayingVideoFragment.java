@@ -20,13 +20,13 @@ import com.montassar.guessmoviesscenes.R;
 public class PlayingVideoFragment extends Fragment {
 
     private VideoView videoView;
-    private int videoId;
+    private Uri videoUri;
     boolean shouldStop = false;
     Handler mHandler;
     Runnable mRunnable;
 
-    public PlayingVideoFragment(int videoId) {
-        this.videoId = videoId;
+    public PlayingVideoFragment(Uri videoUri) {
+        this.videoUri = videoUri;
     }
 
     @Nullable
@@ -36,10 +36,10 @@ public class PlayingVideoFragment extends Fragment {
 
 
         videoView = (VideoView) view.findViewById(R.id.video_view);
-       /* videoView.setVideoPath("file:///android_asset/videos/test.mp4");
+       /* videoView.setVideoPath("file:///android_asset/videos/avatarar.mp4");
         videoView.start();*/
-        String path = "android.resource://" + getActivity().getPackageName() + "/" + videoId;
-        Toast.makeText(getContext(), "" + R.raw.test, Toast.LENGTH_SHORT).show();
+        //String path = "android.resource://" + getActivity().getPackageName() + "/" + videoId;
+        Toast.makeText(getContext(), "" + R.raw.avatar, Toast.LENGTH_SHORT).show();
         // videoView.start();
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -52,7 +52,8 @@ public class PlayingVideoFragment extends Fragment {
 
             }
         });
-        videoView.setVideoURI(Uri.parse(path));
+        //videoView.setVideoURI(Uri.parse(path));
+        videoView.setVideoURI(videoUri);
         //progress();
         trackProgress();
 
